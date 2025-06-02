@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 // ✅ Import fonts from next/font/google
 import { Roboto } from "next/font/google";
 import { Manrope } from "next/font/google";
+import ApolloProviderWrapper from "@/components/ApolloProvider";
 
 // ✅ Configure fonts
 const roboto = Roboto({
@@ -32,13 +33,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={`${roboto.variable} ${manrope.variable}`}>
-        <body className="font-sans flex min-h-screen ">
-          {children}
-          {/* Toaster */}
-        </body>
-      </html>
-    </ClerkProvider>
+    <ApolloProviderWrapper>
+      <ClerkProvider>
+        <html lang="en" className={`${roboto.variable} ${manrope.variable}`}>
+          <body className="font-sans flex min-h-screen ">
+            {children}
+            {/* Toaster */}
+          </body>
+        </html>
+      </ClerkProvider>
+    </ApolloProviderWrapper>
   );
 }

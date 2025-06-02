@@ -1,0 +1,4 @@
+configurationset:
+  - configuration:
+      name: postgresql_config
+      uri: postgresql://ep-twilight-tooth-a8101arv-pooler.eastus2.azure.neon.tech/neondb?user=neondb_owner&password=npg_2bO5EHmfnZLy

@@ -18,7 +18,7 @@ const AdminLayout = ({
 
         {/* Main Content */}
         <main className="flex flex-1 justify-center p-4">
-          <div className="w-full max-w-3xl ">{children}</div>
+          <div className="w-full max-w-3xl  ">{children}</div>
         </main>
       </div>
     </div>

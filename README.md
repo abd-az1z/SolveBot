@@ -16,4 +16,3 @@
 - Clean admin layout with sidebar
 - Fully responsive, mobile-first UI
 
-## 📂 Folder Structure
