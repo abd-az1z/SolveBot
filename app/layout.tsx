@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Roboto } from "next/font/google";
 import { Manrope } from "next/font/google";
 import ApolloProviderWrapper from "@/components/ApolloProvider";
+import { Toaster } from "sonner";
 
 // ✅ Configure fonts
 const roboto = Roboto({
@@ -39,6 +40,7 @@ export default function RootLayout({
           <body className="font-sans flex min-h-screen ">
             {children}
             {/* Toaster */}
+            <Toaster position="bottom-center" />
           </body>
         </html>
       </ClerkProvider>

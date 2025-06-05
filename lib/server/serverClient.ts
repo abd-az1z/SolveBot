@@ -22,14 +22,14 @@ const defaultOptions: DefaultOptions = {
 };
 
 export const serverClient = new ApolloClient({
-    ssrMode: true,
-    link: new HttpLink({
-        uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, // Replace with you graphql endpoint
-        headers:{
-            Authorization: `Apikey ${process.env.GRAPHQL_TOKEN}`
-        },
-        fetch,
-    }),
-    cache: new InMemoryCache(),
-    defaultOptions,
-})
+  ssrMode: true,
+  link: new HttpLink({
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, // Replace with you graphql endpoint
+    headers: {
+      Authorization: `Apikey ${process.env.NEXT_PUBLIC_STEPZEN_API_KEY}`,
+    },
+    fetch,
+  }),
+  cache: new InMemoryCache(),
+  defaultOptions,
+});
