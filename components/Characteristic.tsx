@@ -13,35 +13,32 @@ const Characteristic = ({
   characteristic: ChatbotCharacteristic;
 }) => {
   const [removeCharacteristic] = useMutation(REMOVE_CHARACTERISTIC, {
+    variables: { characteristicId: characteristic.id },
     refetchQueries: ["GetChatbotById"],
+    awaitRefetchQueries: true,
   });
 
-  const handleRemoveCharacteristic = async (characteristicId: number) => {
-    try {
-      await removeCharacteristic({
-        variables: {
-          characteristicId,
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemove = async () => {
+    const promise = removeCharacteristic();
+    toast.promise(promise, {
+      loading: "Removing... ⏳",
+      success: "Characteristic removed successfully ✅",
+      error: "Failed to remove the characteristic ❌",
+    });
   };
+
   return (
-    <li className="relative p-5 hover:border-gray-600 bg-gray-100 border border-gray-200 shadow rounded-md ">
+    <li
+      key={characteristic.id}
+      className="relative p-5 hover:border-gray-600 bg-gray-100 border border-gray-200 shadow rounded-md"
+    >
       {characteristic.content}
       <CircleX
-        onClick={() => {
-          const promise = handleRemoveCharacteristic(characteristic.id);
-          toast.promise(promise, {
-            loading: "Removing... ⏳",
-            success: "Characteristic Removed Successfully ✅ ",
-            error: "Failed to Remove the Characteristic ❌",
-          });
-        }}
-        className="w-6-h-6 text-white fill-red-500  absolute top-0 right-0 cursor-pointer hover:opacity-50    "
+        onClick={handleRemove}
+        className="w-6 h-6 text-white fill-red-500 absolute -top-2 -right-2 cursor-pointer hover:opacity-50"
       />
     </li>
   );
 };
+
 export default Characteristic;

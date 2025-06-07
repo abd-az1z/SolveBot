@@ -8,17 +8,35 @@ import { GetChatbotByIdResponse, GetChatbotByIdVaraibles } from "@/types/types";
 import { useMutation, useQuery } from "@apollo/client";
 import { CopyIcon } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { useParams, redirect } from "next/navigation";
 import { toast } from "sonner";
 import Characteristic from "@/components/Characteristic";
-import { DELETE_CHATBOT } from "@/graphQl/mutations/mutations";
-import { redirect } from "next/navigation";
+import {
+  ADD_CHARACTERISTIC,
+  DELETE_CHATBOT,
+  UPDATE_CHATBOT,
+} from "@/graphQl/mutations/mutations";
 
-const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
-  const [chatbotUrl, setChatbotUrl] = useState<string>("");
-  const [chatbotName, setChatbotName] = useState<string>("");
+const EditChatbot = () => {
+  const params = useParams();
+  const id = params?.id as string;
+
+  const [chatbotUrl, setChatbotUrl] = useState("");
+  const [chatbotName, setChatbotName] = useState("");
+  const [newCharacteristic, setNewCharacteristic] = useState("");
 
   const [deleteChatbot] = useMutation(DELETE_CHATBOT, {
+    refetchQueries: ["GetChatbotById"],
+    awaitRefetchQueries: true,
+  });
+
+  const [addCharacteristic] = useMutation(ADD_CHARACTERISTIC, {
+    refetchQueries: ["GetChatbotById"],
+    awaitRefetchQueries: true,
+  });
+
+  const [updateChatbot] = useMutation(UPDATE_CHATBOT, {
     refetchQueries: ["GetChatbotById"],
     awaitRefetchQueries: true,
   });
@@ -26,9 +44,13 @@ const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
   const { data, loading, error } = useQuery<
     GetChatbotByIdResponse,
     GetChatbotByIdVaraibles
-  >(GET_CHATBOT_BY_ID, { variables: { id: Number(id) } });
+  >(GET_CHATBOT_BY_ID, {
+    variables: { id: Number(id) },
+    skip: !id,
+  });
 
   const handleDelete = async () => {
+    if (!id) return;
     const isConfirmed = window.confirm(
       "Are you sure you want to delete this chatbot?"
     );
@@ -38,12 +60,52 @@ const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
       const promise = deleteChatbot({ variables: { id: Number(id) } });
       toast.promise(promise, {
         loading: "Deleting...",
-        success: "Chatbot Deleted Successfully ✅ ",
+        success: "Chatbot Deleted Successfully ✅",
         error: "Failed to Delete the Chatbot ❌",
       });
     } catch (error) {
-      console.log("Error deleting chatbot:", error);
-      toast.error("Failed to Delete the Chatbot ❌");
+      console.error("Error deleting chatbot:", error);
+    }
+  };
+
+  const handleAddCharacteristic = async (content: string) => {
+    if (!content || !id) return;
+
+    try {
+      const promise = addCharacteristic({
+        variables: {
+          chatbotId: Number(id),
+          content,
+          created_at: new Date().toISOString(),
+        },
+      });
+      toast.promise(promise, {
+        loading: "Adding characteristic...",
+        success: "Characteristic added successfully ✅",
+        error: "Failed to add characteristic ❌",
+      });
+    } catch (error) {
+      console.error("Error adding characteristic:", error);
+    }
+  };
+
+  const handleUpdateChatbot = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const promise = updateChatbot({
+        variables: {
+          id: Number(id),
+          name: chatbotName,
+        },
+      });
+      toast.promise(promise, {
+        loading: "Updating chatbot...",
+        success: "Chatbot name updated successfully ✅",
+        error: "Failed to update chatbot ❌",
+      });
+    } catch (error) {
+      console.error("Error updating chatbot:", error);
     }
   };
 
@@ -54,18 +116,14 @@ const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
   }, [data]);
 
   useEffect(() => {
-    const currentOrigin =
-      typeof window !== "undefined" ? window.location.origin : "";
-    setChatbotUrl(`${currentOrigin}/chatbot/${id}`);
+    const origin = window.location.origin;
+    setChatbotUrl(`${origin}/chatbot/${id}`);
   }, [id]);
 
   if (loading)
     return (
       <div className="mx-auto max-w-xl animate-spin p-5">
-        <Avatar
-          seed="Solve Bot Support agent"
-          // className="w-12 h-12 sm:w-14 sm:h-14"
-        />
+        <Avatar seed="Solve Bot Support agent" />
       </div>
     );
 
@@ -107,7 +165,10 @@ const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
 
         <div className="flex mt-5 items-center gap-4">
           <Avatar seed={chatbotName} className="w-16 h-16" />
-          <form className="flex-1 flex items-center gap-3">
+          <form
+            onSubmit={handleUpdateChatbot}
+            className="flex-1 flex items-center gap-3"
+          >
             <Input
               value={chatbotName}
               onChange={(e) => setChatbotName(e.target.value)}
@@ -130,20 +191,28 @@ const EditChatbot = ({ params: { id } }: { params: { id: string } }) => {
           </p>
         </div>
 
-        <div className="mt-5">
-          <form className="flex-1 flex items-center gap-3">
+        <div className="mt-5 p-2">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAddCharacteristic(newCharacteristic);
+              setNewCharacteristic("");
+            }}
+            className="flex-1 flex items-center gap-3"
+          >
             <Input
               type="text"
               placeholder="Example: Provide price link when asked for prices"
-              disabled
+              value={newCharacteristic}
+              onChange={(e) => setNewCharacteristic(e.target.value)}
             />
-            <Button type="submit" disabled>
+            <Button type="submit" disabled={!newCharacteristic}>
               Add
             </Button>
           </form>
 
           <ul className="mt-4 flex flex-wrap-reverse gap-2">
-            {data?.chatbots?.chatbot_characteristics?.length > 0 ? (
+            {data.chatbots.chatbot_characteristics.length > 0 ? (
               data.chatbots.chatbot_characteristics.map((char) => (
                 <Characteristic key={char.id} characteristic={char} />
               ))

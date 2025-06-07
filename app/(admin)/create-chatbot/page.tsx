@@ -15,7 +15,7 @@ const CreateChatbot = () => {
   const [name, setName] = useState("");
   const router = useRouter();
 
-  const [createChatbot, { data, loading, error }] = useMutation(CREATE_CHATBOT);
+  const [createChatbot, { loading, error }] = useMutation(CREATE_CHATBOT);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -53,6 +53,15 @@ const CreateChatbot = () => {
       console.error("❌ Apollo Error:", err);
     }
   };
+
+  if (loading)
+    return (
+      <div className="mx-auto max-w-xl animate-spin p-5">
+        <Avatar seed="Solve Bot Support agent" />
+      </div>
+    );
+
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <section className="w-full">
