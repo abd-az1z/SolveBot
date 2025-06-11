@@ -10,7 +10,7 @@ export interface Chatbot {
 export interface ChatbotCharacteristic {
   id: number;
   chatbot_id: number;
-  content: string; 
+  content: string;
   created_at: string;
 }
 
@@ -21,13 +21,22 @@ export interface Guest {
   created_at: string;
 }
 
+// export interface ChatSession {
+//   id: number;
+//   chatbot_id: number;
+//   guest_id: number;
+//   created_at: string;
+//   messages: Message[];
+//   guest: Guest;
+// }
+
 export interface ChatSession {
   id: number;
   chatbot_id: number;
   guest_id: number;
   created_at: string;
   messages: Message[];
-  guests: Guest;
+  guests: Guest; // ✅ this must match GraphQL response
 }
 
 export interface Message {
@@ -44,4 +53,56 @@ export interface GetChatbotByIdResponse {
 
 export interface GetChatbotByIdVaraibles {
   id: string;
+}
+
+export interface GetChatbotsByUserData {
+  chatbotsList: Chatbot[];
+}
+
+export interface GetChatbotsByUserDataVariables {
+  clerk_user_id: string;
+}
+
+export interface GetUserChatbotsResponse {
+  chatbotsByUser: Chatbot[];
+}
+
+export interface GetUserChatbotsVariables {
+  userId: string;
+}
+
+export interface GetChatSessionMessagesVariables {
+  id: number;
+}
+
+
+// OG
+// export interface GetChatSessionMessagesResponse {
+//   chat_sessions: {
+//     id: number;
+//     created_at: string;
+//     messages: Message[];
+//     guest: {
+//       name: string;
+//       email: string;
+//     };
+//     chatbot: {
+//       name: string;
+//     };
+//   };
+// }
+
+export interface GetChatSessionMessagesResponse {
+  chat_sessions: {
+    id: number;
+    created_at: string;
+    messages: Message[];
+    guests: {
+      name: string;
+      email: string;
+    };
+    chatbots: {
+      name: string;
+    };
+  };
 }

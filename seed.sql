@@ -310,3 +310,4 @@ INSERT INTO messages (chat_session_id, content, sender) VALUES
 --     'Yes, there are 250 hours of coaching calls included in the course.' ai ');
 
 
+SELECT '✅ Database seeded successfully!' AS message;

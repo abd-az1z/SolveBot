@@ -133,7 +133,7 @@ const EditChatbot = () => {
   return (
     <div className="max-w-3xl relative mx-auto px-4 md:px-8 py-8">
       <div className="bg-green-700 text-white rounded-lg p-6 space-y-3 shadow-md">
-        <h2 className="text-base font-semibold">Shareable Chatbot Link</h2>
+        <h2 className="text-xl md:text-2xl font-semibold">Shareable Chatbot Link</h2>
         <p className="text-sm text-green-100">
           Share this link with customers:
         </p>
