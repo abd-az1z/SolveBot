@@ -75,23 +75,6 @@ export interface GetChatSessionMessagesVariables {
   id: number;
 }
 
-
-// OG
-// export interface GetChatSessionMessagesResponse {
-//   chat_sessions: {
-//     id: number;
-//     created_at: string;
-//     messages: Message[];
-//     guest: {
-//       name: string;
-//       email: string;
-//     };
-//     chatbot: {
-//       name: string;
-//     };
-//   };
-// }
-
 export interface GetChatSessionMessagesResponse {
   chat_sessions: {
     id: number;
@@ -105,4 +88,12 @@ export interface GetChatSessionMessagesResponse {
       name: string;
     };
   };
+}
+
+export interface MessagesByChatSessionIdResponse {
+  chat_sessions: ChatSession;
+}
+
+export interface MessagesByChatSessionIdVariables {
+  chat_session_id: number;
 }

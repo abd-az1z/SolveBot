@@ -25,10 +25,12 @@ function Messages({
     }
   }, [messages]);
 
+  // Filter messages to exclude any without content
+  const validMessages = messages.filter((m) => m?.content);
   return (
     <div className="space-y-4 p-4 sm:p-6 lg:p-8 border-[#389f38] bg-slate-100 border-2 rounded-2xl shadow-xl  ">
-      {messages.map((message) => {
-        const isChatbot = message.sender === "ai";
+      {validMessages.map((message) => {
+        const isChatbot = message.sender.toLowerCase() === "ai";
 
         return (
           <div
@@ -109,7 +111,7 @@ function Messages({
                       ),
                     }}
                   >
-                    {message.content}
+                    {message.content.toString()}
                   </ReactMarkdown>
                   {isReviewsPage && (
                     <span

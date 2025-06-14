@@ -73,7 +73,6 @@ export const GET_USER_CHATBOTS = gql`
   }
 `;
 
-
 // OG
 // export const GET_CHAT_SESSION_MESSAGES = gql`
 //   query GetChatSessionMessages($id: Int!) {
@@ -97,7 +96,6 @@ export const GET_USER_CHATBOTS = gql`
 //   }
 // `;
 
-
 export const GET_CHAT_SESSION_MESSAGES = gql`
   query GetChatSessionMessages($id: Int!) {
     chat_sessions(id: $id) {
@@ -115,6 +113,33 @@ export const GET_CHAT_SESSION_MESSAGES = gql`
       }
       chatbots {
         name
+      }
+    }
+  }
+`;
+
+// export const GET_MESSAGES_BY_CHAT_SESSION_ID = gql`
+//   query GetMessagesByChatSessionId($chat_session_id: Int!) {
+//     chat_sessions(id: $chat_session_id) {
+//       id
+//       messages {
+//         id
+//         content
+//         sender
+//         created_at
+//       }
+//     }
+//   }
+// `;
+export const GET_MESSAGES_BY_CHAT_SESSION_ID = gql`
+  query GetMessagesByChatSessionId($chat_session_id: Int!) {
+    chat_sessions(id: $chat_session_id) {
+      id
+      messages {
+        id
+        content
+        sender
+        created_at
       }
     }
   }
