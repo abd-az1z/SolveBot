@@ -34,3 +34,77 @@
 
 ## 📁 Project Structure
 
+solvebot/
+├── app/
+│   ├── (admin)/
+│   │   ├── edit-chatbot/[id]/page.tsx
+│   │   ├── view-chatbots/page.tsx
+│   │   └── review-sessions/[id]/page.tsx
+│   ├── (guest)/
+│   │   ├── login/page.tsx
+│   │   └── chatbot/[id]/page.tsx
+│   ├── api/
+│   │   └── send-message/route.ts
+│   └── loading.tsx
+├── components/
+│   ├── ChatBotSessions.tsx
+│   ├── Messages.tsx
+│   ├── Characteristic.tsx
+│   └── ui/
+│       ├── button.tsx
+│       ├── input.tsx
+│       ├── form.tsx
+│       ├── label.tsx
+│       ├── dialog.tsx
+│       └── accordion.tsx
+├── lib/
+│   └── startNewChat.ts
+├── graphQl/
+│   ├── mutations/mutations.ts
+│   └── queries/queries.ts
+├── types/types.ts
+├── public/
+├── styles/
+├── .gitignore
+├── README.md
+├── next.config.ts
+├── package.json
+├── tailwind.config.js
+└── tsconfig.json
+
+---
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repo
+
+```bash
+git clone https://github.com/abd-az1z/SolveBot.git
+cd SolveBot```
+
+
+### 2. Install Dependencies
+npm install
+
+### 3. Configure Environment Variables
+
+
+🔐 Clerk Authentication
+
+This app uses Clerk for login/signup. Make sure you set up your app on Clerk and update the environment keys.
+
+⸻
+
+🤖 GPT Integration
+
+The /api/send-message/route.ts connects with OpenAI’s GPT to generate AI responses. You can customize behavior by editing the startNewChat.ts utility and chat session logic.
+
+
+⸻
+
+🤝 Contributing
+	1.	Fork the project
+	2.	Create your feature branch: git checkout -b feature/name
+	3.	Commit changes: git commit -m 'feat: description'
+	4.	Push to GitHub: git push origin feature/name
+	5.	Submit a Pull Request ✅
