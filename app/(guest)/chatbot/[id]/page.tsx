@@ -170,6 +170,7 @@ function ChatbotPage() {
 
   return (
     <div className="w-full min-h-screen bg-[#f7f9fc] flex items-center justify-center px-4">
+      {/* Initial user info dialog */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-md rounded-2xl shadow-lg border border-[#389f38]/30">
           <form onSubmit={handleInformationSubmit}>
@@ -220,7 +221,9 @@ function ChatbotPage() {
         </DialogContent>
       </Dialog>
 
-      <div className="flex flex-col w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl mt-10 border border-[#389f38]/20 overflow-hidden">
+      {/* Chat layout */}
+      <div className="flex flex-col w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl mt-10 border border-[#389f38]/20 overflow-hidden h-[80vh] sm:h-[85vh]">
+        {/* Sticky Header */}
         <div className="flex items-center gap-4 px-6 py-4 bg-[#f0fdf4] border-b border-[#389f38]/30 sticky top-0 z-50">
           <Avatar
             seed={chatbotData?.chatbots?.name}
@@ -234,7 +237,8 @@ function ChatbotPage() {
           </div>
         </div>
 
-        <div className="p-6 bg-gray-50 min-h-[200px]">
+        {/* Scrollable Messages */}
+        <div className="flex-1 overflow-y-auto px-6 py-4 bg-gray-50">
           {messages.length > 0 ? (
             <Messages
               messages={messages}
@@ -245,41 +249,41 @@ function ChatbotPage() {
               No messages yet. Start the conversation above.
             </p>
           )}
-
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex items-center sticky bottom-0 z-50 p-2 mt-6 rounded-xl border border-[#389f38]/30 bg-white shadow-lg focus-within:ring-2 focus-within:ring-[#389f38] transition-all"
-            >
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel hidden>Message</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Type your message here..."
-                        className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#389f38] transition"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="ml-2 px-6 py-2 bg-[#389f38] hover:bg-[#2f7e2f] text-white text-sm font-semibold rounded-lg transition-all"
-              >
-                Send
-              </Button>
-            </form>
-          </Form>
         </div>
+
+        {/* Sticky Message Input */}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex items-center p-2 border-t bg-white z-10"
+          >
+            <FormField
+              control={form.control}
+              name="message"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormLabel hidden>Message</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Type your message here..."
+                      className="w-full px-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#389f38] transition"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="ml-2 px-6 py-2 bg-[#389f38] hover:bg-[#2f7e2f] text-white text-sm font-semibold rounded-lg transition-all"
+            >
+              Send
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );
 }
 
 export default ChatbotPage;
-

@@ -11,14 +11,6 @@ export const dynamic = "force-dynamic";
 async function ReviewSession({ params: { id } }: { params: { id: string } }) {
   const sessionIdNumber = parseInt(id);
 
-  // if (isNaN(sessionIdNumber)) {
-  //   return (
-  //     <div className="flex justify-center items-center h-screen">
-  //       <p className="text-red-500 text-xl">Invalid session ID format.</p>
-  //     </div>
-  //   );
-  // }
-
   const response = await serverClient.query<
     GetChatSessionMessagesResponse,
     GetChatSessionMessagesVariables
@@ -30,8 +22,8 @@ async function ReviewSession({ params: { id } }: { params: { id: string } }) {
   if (response.errors || !response.data?.chat_sessions) {
     console.error("GraphQL Error:", response.errors);
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-red-500 text-xl">
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 px-4">
+        <p className="text-red-500 text-lg sm:text-xl text-center">
           {response.errors ? "Error loading session." : "Session not found."}
         </p>
       </div>
@@ -47,17 +39,21 @@ async function ReviewSession({ params: { id } }: { params: { id: string } }) {
   } = response.data.chat_sessions;
 
   return (
-    <div className="flex-1 px-4 sm:px-6 lg:px-8 py-10 bg-white max-w-4xl mx-auto">
+    <div className="flex flex-col px-4 sm:px-6 lg:px-8 py-10 bg-white min-h-screen max-w-5xl mx-auto">
+      {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#389f38e3]">Session Review</h1>
-        <p className="text-gray-500 mt-1 text-sm">
+        <h1 className="text-2xl sm:text-3xl font-bold text-[#389f38e3]">
+          Session Review
+        </h1>
+        <p className="text-gray-500 mt-1 text-sm sm:text-base">
           Started at: {new Date(created_at).toLocaleString()}
         </p>
       </div>
 
-      <div className="bg-gray-50 p-5 rounded-lg border mb-8">
-        <h2 className="text-lg font-semibold mb-2">Session Info</h2>
-        <div className="space-y-1">
+      {/* Session Info Box */}
+      <div className="bg-gray-50 p-4 sm:p-5 rounded-lg border border-gray-200 mb-8">
+        <h2 className="text-lg sm:text-xl font-semibold mb-3">Session Info</h2>
+        <div className="space-y-1 text-sm sm:text-base">
           <p>
             <span className="font-medium text-gray-700">Chatbot:</span>{" "}
             <span className="text-gray-900">{chatbotName}</span>
@@ -71,29 +67,16 @@ async function ReviewSession({ params: { id } }: { params: { id: string } }) {
         </div>
       </div>
 
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4">Messages</h2>
+      {/* Messages */}
+      <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">
+        Messages
+      </h2>
 
-      <Messages messages={messages} chatBotName={chatbotName} />
-
-
-      {/* <div className="space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`w-fit max-w-md p-4 rounded-lg shadow-sm text-sm ${
-              message.sender === "ai"
-                ? "bg-green-100 text-green-800 self-start rounded-bl-none"
-                : "bg-blue-100 text-blue-800 self-end rounded-br-none ml-auto"
-            }`}
-          >
-            <p className="font-semibold capitalize mb-1">{message.sender}:</p>
-            <p>{message.content}</p>
-            <p className="text-xs text-gray-500 text-right mt-1">
-              {new Date(message.created_at).toLocaleTimeString()}
-            </p>
-          </div>
-        ))}
-      </div> */}
+      <div className="border max-w-[300px] sm:max-w-2xl  border-gray-100 rounded-lg shadow-sm bg-white p-3 sm:p-4 overflow-hidden">
+        <div className="w-full">
+          <Messages messages={messages} chatBotName={chatbotName} />
+        </div>
+      </div>
     </div>
   );
 }
